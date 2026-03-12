@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Convivencia Digital</title>
+
+<style>
+body{
+font-family: Arial;
+background:#1e1e2f;
+color:white;
+text-align:center;
+padding:20px;
+}
+
+.container{
+max-width:400px;
+margin:auto;
+background:#2b2b40;
+padding:20px;
+border-radius:10px;
+}
+
+button{
+display:block;
+width:100%;
+margin:10px 0;
+padding:12px;
+border:none;
+border-radius:8px;
+background:#4CAF50;
+color:white;
+font-size:16px;
+}
+
+button:hover{
+background:#45a049;
+}
+
+#progress{
+width:100%;
+background:#444;
+border-radius:10px;
+overflow:hidden;
+margin-bottom:15px;
+}
+
+#bar{
+height:10px;
+width:0%;
+background:#00ffae;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Convivencia Digital Quiz</h2>
+
+<div id="progress">
+<div id="bar"></div>
+</div>
+
+<h3 id="question"></h3>
+
+<div id="answers"></div>
+
+<p id="result"></p>
+
+</div>
+
+<script>
+
+let level = 1
+let questionIndex = 0
+
+const quiz = [
+{
+question:"¿Qué debes hacer si alguien te insulta en internet?",
+answers:["Insultarlo también","Bloquearlo o ignorarlo","Compartir su perfil"],
+correct:1
+},
+{
+question:"¿Es correcto compartir datos personales online?",
+answers:["Sí siempre","Solo con desconocidos","No, hay que protegerlos"],
+correct:2
+},
+{
+question:"¿Qué es el ciberbullying?",
+answers:["Ayudar a alguien","Acosar en internet","Un videojuego"],
+correct:1
+},
+{
+question:"¿Qué haces si ves bullying online?",
+answers:["Ignorarlo","Defender o reportar","Compartirlo"],
+correct:1
+}
+]
+
+function loadQuestion(){
+
+let q = quiz[questionIndex]
+
+document.getElementById("question").innerText = "Nivel "+level+": "+q.question
+
+let answersHTML = ""
+
+q.answers.forEach((a,i)=>{
+answersHTML += `<button onclick="answer(${i})">${a}</button>`
+})
+
+document.getElementById("answers").innerHTML = answersHTML
+
+updateProgress()
+
+}
+
+function answer(i){
+
+let q = quiz[questionIndex]
+
+if(i === q.correct){
+document.getElementById("result").innerText = "✅ Correcto"
+}else{
+document.getElementById("result").innerText = "❌ Incorrecto"
+}
+
+setTimeout(()=>{
+
+questionIndex++
+
+if(questionIndex == 2 && level == 1){
+level = 2
+}
+
+if(questionIndex >= quiz.length){
+document.getElementById("question").innerText = "🎉 Terminaste el juego"
+document.getElementById("answers").innerHTML = ""
+document.getElementById("result").innerText = ""
+return
+}
+
+loadQuestion()
+
+},1000)
+
+}
+
+function updateProgress(){
+
+let progress = (questionIndex/quiz.length)*100
+
+document.getElementById("bar").style.width = progress+"%"
+
+}
+
+loadQuestion()
+
+</script>
+
+</body>
+</html>
